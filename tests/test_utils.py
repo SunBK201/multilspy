@@ -8,8 +8,7 @@ from uuid import uuid4
 from scubalspy.scubalspy_config import ScubalspyConfig
 from scubalspy.scubalspy_logger import ScubalspyLogger
 from scubalspy.scubalspy_utils import FileUtils
-
-from tests.scubalspy.scubalspy_context import ScubalspyContext
+from tests.scubalspy.multilspy_context import ScubalspyContext
 
 
 @contextlib.contextmanager
