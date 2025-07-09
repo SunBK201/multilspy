@@ -3,20 +3,21 @@ This file contains tests for running the Rust Language Server: rust-analyzer
 """
 
 import unittest
-import pytest
-
-from multilspy import LanguageServer
-from multilspy.multilspy_config import Language
-from multilspy.multilspy_types import Position, CompletionItemKind
-from tests.test_utils import create_test_context
 from pathlib import PurePath
+
+import pytest
+from scubalspy import LanguageServer
+from scubalspy.scubalspy_config import Language
+from scubalspy.scubalspy_types import CompletionItemKind, Position
+
+from tests.test_utils import create_test_context
 
 pytest_plugins = ("pytest_asyncio",)
 
 @pytest.mark.asyncio
-async def test_multilspy_rust_carbonyl():
+async def test_scubalspy_rust_carbonyl():
     """
-    Test the working of multilspy with rust repository - carbonyl
+    Test the working of scubalspy with rust repository - carbonyl
     """
     code_language = Language.RUST
     params = {
@@ -90,9 +91,9 @@ async def test_multilspy_rust_carbonyl():
             }]
 
 @pytest.mark.asyncio
-async def test_multilspy_rust_completions_mediaplayer() -> None:
+async def test_scubalspy_rust_completions_mediaplayer() -> None:
     """
-    Test the working of multilspy with Rust repository - mediaplayer
+    Test the working of scubalspy with Rust repository - mediaplayer
     """
     code_language = Language.RUST
     params = {

@@ -3,11 +3,12 @@ This file contains tests for running the Ruby Language Server: solargraph
 """
 
 import unittest
-
-from multilspy import SyncLanguageServer
-from multilspy.multilspy_config import Language
-from tests.test_utils import create_test_context
 from pathlib import PurePath
+
+from scubalspy import SyncLanguageServer
+from scubalspy.scubalspy_config import Language
+
+from tests.test_utils import create_test_context
 
 EXPECTED_RESULT = [
     {
@@ -69,9 +70,9 @@ EXPECTED_RESULT = [
 ]
 
 
-def test_multilspy_ruby_rubyland() -> None:
+def test_scubalspy_ruby_rubyland() -> None:
     """
-    Test the working of multilspy with ruby repository - rubyland
+    Test the working of scubalspy with ruby repository - rubyland
     """
     code_language = Language.RUBY
     params = {

@@ -2,14 +2,17 @@
 This file contains tests for running the JavaScript Language Server: typescript-language-server
 """
 
-from multilspy import SyncLanguageServer
-from multilspy.multilspy_config import Language
-from tests.test_utils import create_test_context
 from pathlib import PurePath
 
-def test_sync_multilspy_javascript_exceljs() -> None:
+from scubalspy import SyncLanguageServer
+from scubalspy.scubalspy_config import Language
+
+from tests.test_utils import create_test_context
+
+
+def test_sync_scubalspy_javascript_exceljs() -> None:
     """
-    Test the working of multilspy with javascript repository - exceljs
+    Test the working of scubalspy with javascript repository - exceljs
     """
     code_language = Language.JAVASCRIPT
     params = {

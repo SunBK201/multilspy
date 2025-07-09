@@ -2,19 +2,21 @@
 This file contains tests for running the Java Language Server: Eclipse JDT.LS
 """
 
-import pytest
 from pathlib import PurePath
-from multilspy import LanguageServer
-from multilspy.multilspy_config import Language
-from multilspy.multilspy_types import Position, CompletionItemKind
+
+import pytest
+from scubalspy import LanguageServer
+from scubalspy.scubalspy_config import Language
+from scubalspy.scubalspy_types import CompletionItemKind, Position
+
 from tests.test_utils import create_test_context
 
 pytest_plugins = ("pytest_asyncio",)
 
 @pytest.mark.asyncio
-async def test_multilspy_java_clickhouse_highlevel_sinker():
+async def test_scubalspy_java_clickhouse_highlevel_sinker():
     """
-    Test the working of multilspy with Java repository - clickhouse-highlevel-sinker
+    Test the working of scubalspy with Java repository - clickhouse-highlevel-sinker
     """
     code_language = Language.JAVA
     params = {
@@ -144,9 +146,9 @@ async def test_multilspy_java_clickhouse_highlevel_sinker():
                 assert completions == ['ClickHouseSinkBuffer']
 
 @pytest.mark.asyncio
-async def test_multilspy_java_clickhouse_highlevel_sinker_modified():
+async def test_scubalspy_java_clickhouse_highlevel_sinker_modified():
     """
-    Test the working of multilspy with Java repository - clickhouse-highlevel-sinker
+    Test the working of scubalspy with Java repository - clickhouse-highlevel-sinker
     """
     code_language = Language.JAVA
     params = {
@@ -208,9 +210,9 @@ async def test_multilspy_java_clickhouse_highlevel_sinker_modified():
                 assert completions == ['ClickHouseSinkBuffer']
 
 @pytest.mark.asyncio
-async def test_multilspy_java_example_repo_document_symbols() -> None:
+async def test_scubalspy_java_example_repo_document_symbols() -> None:
     """
-    Test the working of multilspy with Java repository - clickhouse-highlevel-sinker
+    Test the working of scubalspy with Java repository - clickhouse-highlevel-sinker
     """
     code_language = Language.JAVA
     params = {
@@ -347,7 +349,7 @@ async def test_multilspy_java_example_repo_document_symbols() -> None:
             )
 
 @pytest.mark.asyncio
-async def test_multilspy_java_clickhouse_highlevel_sinker_modified_hover():
+async def test_scubalspy_java_clickhouse_highlevel_sinker_modified_hover():
     """
     Test the working of textDocument/hover with Java repository - clickhouse-highlevel-sinker modified
     """
@@ -387,7 +389,7 @@ async def test_multilspy_java_clickhouse_highlevel_sinker_modified_hover():
                 }
 
 @pytest.mark.asyncio
-async def test_multilspy_java_clickhouse_highlevel_sinker_modified_completion_method_signature():
+async def test_scubalspy_java_clickhouse_highlevel_sinker_modified_completion_method_signature():
     """
     Test the working of textDocument/hover with Java repository - clickhouse-highlevel-sinker modified
     """

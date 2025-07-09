@@ -2,17 +2,19 @@
 This file contains tests for running the C# Language Server: OmniSharp
 """
 
-import pytest
-
-from multilspy import SyncLanguageServer
-from multilspy.multilspy_config import Language
-from tests.test_utils import create_test_context
 from pathlib import PurePath
 
+import pytest
+from scubalspy import SyncLanguageServer
+from scubalspy.scubalspy_config import Language
+
+from tests.test_utils import create_test_context
+
+
 @pytest.mark.skip(reason="Need to find alternative repository for testing")
-def test_multilspy_csharp_ryujinx() -> None:
+def test_scubalspy_csharp_ryujinx() -> None:
     """
-    Test the working of multilspy with C# repository - Ryujinx
+    Test the working of scubalspy with C# repository - Ryujinx
     """
     code_language = Language.CSHARP
     params = {

@@ -2,18 +2,20 @@
 This file contains tests for running the Golang Language Server: gopls
 """
 
-import pytest
-from multilspy import LanguageServer
-from multilspy.multilspy_config import Language
-from tests.test_utils import create_test_context
 from pathlib import PurePath
+
+import pytest
+from scubalspy import LanguageServer
+from scubalspy.scubalspy_config import Language
+
+from tests.test_utils import create_test_context
 
 pytest_plugins = ("pytest_asyncio",)
 
 @pytest.mark.asyncio
-async def test_multilspy_golang_example():
+async def test_scubalspy_golang_example():
     """
-    Test the working of multilspy with golang repository - https://github.com/golang/example
+    Test the working of scubalspy with golang repository - https://github.com/golang/example
     """
     code_language = Language.GO
     params = {

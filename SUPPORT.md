@@ -9,4 +9,4 @@ feature request as a new Issue.
 For help and questions about using this project, please create an issue with the label "question".
 
 ## Microsoft Support Policy  
-Support for `multilspy` is limited to the resources listed above.
+Support for `scubalspy` is limited to the resources listed above.

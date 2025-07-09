@@ -2,16 +2,19 @@
 This file contains tests for running the Python Language Server: jedi-language-server
 """
 
-import pytest
-from multilspy import SyncLanguageServer
-from multilspy.multilspy_config import Language
-from tests.test_utils import create_test_context
-from pathlib import PurePath
 import time
+from pathlib import PurePath
 
-def test_multilspy_timeout() -> None:
+import pytest
+from scubalspy import SyncLanguageServer
+from scubalspy.scubalspy_config import Language
+
+from tests.test_utils import create_test_context
+
+
+def test_scubalspy_timeout() -> None:
     """
-    Test timeout error in multilspy
+    Test timeout error in scubalspy
     """
     code_language = Language.PYTHON
     params = {

@@ -3,15 +3,17 @@ This file contains tests for running the Rust Language Server: rust-analyzer
 """
 
 import unittest
-
-from multilspy import SyncLanguageServer
-from multilspy.multilspy_config import Language
-from tests.test_utils import create_test_context
 from pathlib import PurePath
 
-def test_multilspy_rust_carbonyl() -> None:
+from scubalspy import SyncLanguageServer
+from scubalspy.scubalspy_config import Language
+
+from tests.test_utils import create_test_context
+
+
+def test_scubalspy_rust_carbonyl() -> None:
     """
-    Test the working of multilspy with rust repository - carbonyl
+    Test the working of scubalspy with rust repository - carbonyl
     """
     code_language = Language.RUST
     params = {

@@ -2,18 +2,20 @@
 This file contains tests for running the Python Language Server: jedi-language-server
 """
 
-import pytest
-from multilspy import LanguageServer
-from multilspy.multilspy_config import Language
-from tests.test_utils import create_test_context
 from pathlib import PurePath
+
+import pytest
+from scubalspy import LanguageServer
+from scubalspy.scubalspy_config import Language
+
+from tests.test_utils import create_test_context
 
 pytest_plugins = ("pytest_asyncio",)
 
 @pytest.mark.asyncio
-async def test_multilspy_python_black():
+async def test_scubalspy_python_black():
     """
-    Test the working of multilspy with python repository - black
+    Test the working of scubalspy with python repository - black
     """
     code_language = Language.PYTHON
     params = {

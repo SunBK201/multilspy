@@ -2,19 +2,21 @@
 This file contains tests for running the Dart Language Server.
 """
 
-import pytest
-from multilspy import LanguageServer
-from multilspy.multilspy_config import Language
-from tests.test_utils import create_test_context
 from pathlib import PurePath
+
+import pytest
+from scubalspy import LanguageServer
+from scubalspy.scubalspy_config import Language
+
+from tests.test_utils import create_test_context
 
 pytest_plugins = ("pytest_asyncio",)
 
 
 @pytest.mark.asyncio
-async def test_multilspy_dart_open_nutri_tracker():
+async def test_scubalspy_dart_open_nutri_tracker():
     """
-    Test the working of multilspy with a Dart repository.
+    Test the working of scubalspy with a Dart repository.
     """
     code_language = Language.DART
     params = {

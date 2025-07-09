@@ -2,15 +2,17 @@
 This file contains tests for running the Python Language Server: jedi-language-server
 """
 
-from multilspy import SyncLanguageServer
-from multilspy.multilspy_config import Language
-from tests.test_utils import create_test_context
 from pathlib import PurePath
 
+from scubalspy import SyncLanguageServer
+from scubalspy.scubalspy_config import Language
 
-def test_sync_multilspy_dart_open_nutri_tracker() -> None:
+from tests.test_utils import create_test_context
+
+
+def test_sync_scubalspy_dart_open_nutri_tracker() -> None:
     """
-    Test the working of multilspy with the Dart Language Server
+    Test the working of scubalspy with the Dart Language Server
     """
     code_language = Language.DART
     params = {

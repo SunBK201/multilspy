@@ -2,14 +2,18 @@
 This file contains tests for running the TypeScript Language Server: typescript-language-server
 """
 
-from multilspy import SyncLanguageServer
-from multilspy.multilspy_config import Language
-from tests.test_utils import create_test_context
-from pathlib import PurePath
 import os
-def test_sync_multilspy_typescript_trpc() -> None:
+from pathlib import PurePath
+
+from scubalspy import SyncLanguageServer
+from scubalspy.scubalspy_config import Language
+
+from tests.test_utils import create_test_context
+
+
+def test_sync_scubalspy_typescript_trpc() -> None:
     """
-    Test the working of multilspy with typescript repository - trpc
+    Test the working of scubalspy with typescript repository - trpc
     """
     code_language = Language.TYPESCRIPT
     params = {

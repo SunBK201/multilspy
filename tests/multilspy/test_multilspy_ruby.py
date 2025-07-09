@@ -3,20 +3,21 @@ This file contains tests for running the Ruby Language Server: solargraph
 """
 
 import unittest
-import pytest
-
-from multilspy import LanguageServer
-from multilspy.multilspy_config import Language
-from multilspy.multilspy_types import Position, CompletionItemKind
-from tests.test_utils import create_test_context
 from pathlib import PurePath
-from tests.multilspy.test_sync_multilspy_ruby import EXPECTED_RESULT
+
+import pytest
+from scubalspy import LanguageServer
+from scubalspy.scubalspy_config import Language
+from scubalspy.scubalspy_types import CompletionItemKind, Position
+
+from tests.scubalspy.test_sync_scubalspy_ruby import EXPECTED_RESULT
+from tests.test_utils import create_test_context
 
 
 @pytest.mark.asyncio
-async def test_multilspy_ruby_rubyland():
+async def test_scubalspy_ruby_rubyland():
     """
-    Test the working of multilspy with ruby repository - rubyland
+    Test the working of scubalspy with ruby repository - rubyland
     """
     code_language = Language.RUBY
     params = {

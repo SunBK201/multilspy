@@ -1,16 +1,18 @@
 """
-Provides the MultilspyContext class, which stores the context for a Multilspy test.
+Provides the ScubalspyContext class, which stores the context for a Scubalspy test.
 """
 
 import dataclasses
-from multilspy.multilspy_config import MultilspyConfig
-from multilspy.multilspy_logger import MultilspyLogger
+
+from scubalspy.scubalspy_config import ScubalspyConfig
+from scubalspy.scubalspy_logger import ScubalspyLogger
+
 
 @dataclasses.dataclass
-class MultilspyContext:
+class ScubalspyContext:
     """
-    Stores the context for a Multilspy test.
+    Stores the context for a Scubalspy test.
     """
-    config: MultilspyConfig
-    logger: MultilspyLogger
+    config: ScubalspyConfig
+    logger: ScubalspyLogger
     source_directory: str

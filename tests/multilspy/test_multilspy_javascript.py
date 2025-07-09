@@ -2,18 +2,20 @@
 This file contains tests for running the JavaScript Language Server: typescript-language-server
 """
 
-import pytest
-from multilspy import LanguageServer
-from multilspy.multilspy_config import Language
-from tests.test_utils import create_test_context
 from pathlib import PurePath
+
+import pytest
+from scubalspy import LanguageServer
+from scubalspy.scubalspy_config import Language
+
+from tests.test_utils import create_test_context
 
 pytest_plugins = ("pytest_asyncio",)
 
 @pytest.mark.asyncio
-async def test_multilspy_javascript_exceljs():
+async def test_scubalspy_javascript_exceljs():
     """
-    Test the working of multilspy with javascript repository - exceljs
+    Test the working of scubalspy with javascript repository - exceljs
     """
     code_language = Language.JAVASCRIPT
     params = {

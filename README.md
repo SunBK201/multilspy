@@ -1,20 +1,20 @@
-[![PyPI - Version](https://img.shields.io/pypi/v/multilspy)](https://pypi.org/project/multilspy/)
-# Multilspy: LSP client library in Python to build applications around language servers
+[![PyPI - Version](https://img.shields.io/pypi/v/scubalspy)](https://pypi.org/project/scubalspy/)
+# Scubalspy: LSP client library in Python to build applications around language servers
 
 ## Introduction
-This repository hosts `multilspy`, a library developed as part of research conducted for NeruIPS 2023 paper titled ["Monitor-Guided Decoding of Code LMs with Static Analysis of Repository Context"](https://neurips.cc/virtual/2023/poster/70362) (["Guiding Language Models of Code with Global Context using Monitors"](https://arxiv.org/abs/2306.10763) on Arxiv). The paper introduces Monitor-Guided Decoding (MGD) for code generation using Language Models, where a monitor uses static analysis to guide the decoding, ensuring that the generated code follows various correctness properties, like absence of hallucinated symbol names, valid order of method calls, etc. For further details about Monitor-Guided Decoding, please refer to the paper and GitHub repository [microsoft/monitors4codegen](https://github.com/microsoft/monitors4codegen).
+This repository hosts `scubalspy`, a library developed as part of research conducted for NeruIPS 2023 paper titled ["Monitor-Guided Decoding of Code LMs with Static Analysis of Repository Context"](https://neurips.cc/virtual/2023/poster/70362) (["Guiding Language Models of Code with Global Context using Monitors"](https://arxiv.org/abs/2306.10763) on Arxiv). The paper introduces Monitor-Guided Decoding (MGD) for code generation using Language Models, where a monitor uses static analysis to guide the decoding, ensuring that the generated code follows various correctness properties, like absence of hallucinated symbol names, valid order of method calls, etc. For further details about Monitor-Guided Decoding, please refer to the paper and GitHub repository [microsoft/monitors4codegen](https://github.com/microsoft/monitors4codegen).
 
-`multilspy` is a cross-platform library designed to simplify the process of creating language server clients to query and obtain results of various static analyses from a wide variety of language servers that communicate over the [Language Server Protocol](https://microsoft.github.io/language-server-protocol/). It is easily extensible to support any [language that has a Language Server](https://microsoft.github.io/language-server-protocol/implementors/servers/) and we aim to continuously add support for more language servers and languages.
+`scubalspy` is a cross-platform library designed to simplify the process of creating language server clients to query and obtain results of various static analyses from a wide variety of language servers that communicate over the [Language Server Protocol](https://microsoft.github.io/language-server-protocol/). It is easily extensible to support any [language that has a Language Server](https://microsoft.github.io/language-server-protocol/implementors/servers/) and we aim to continuously add support for more language servers and languages.
 
-[Language servers]((https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/)) are tools that perform a variety of static analyses on code repositories and provide useful information such as type-directed code completion suggestions, symbol definition locations, symbol references, etc., over the [Language Server Protocol (LSP)](https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/). Since LSP is language-agnostic, `multilspy` can provide the results for static analyses of code in different languages over a common interface.
+[Language servers]((https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/)) are tools that perform a variety of static analyses on code repositories and provide useful information such as type-directed code completion suggestions, symbol definition locations, symbol references, etc., over the [Language Server Protocol (LSP)](https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/). Since LSP is language-agnostic, `scubalspy` can provide the results for static analyses of code in different languages over a common interface.
 
-`multilspy` intends to ease the process of using language servers, by handling various steps in using a language server:
+`scubalspy` intends to ease the process of using language servers, by handling various steps in using a language server:
 * Automatically handling the download of platform-specific server binaries, and setup/teardown of language servers
 * Handling JSON-RPC based communication between the client and the server
 * Maintaining and passing hand-tuned server and language specific configuration parameters
 * Providing a simple API to the user, while executing all steps of server-specific protocol steps to execute the query/request.
 
-Some of the analysis results that `multilspy` can provide are:
+Some of the analysis results that `scubalspy` can provide are:
 - Finding the definition of a function or a class ([textDocument/definition](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_definition))
 - Finding the callers of a function or the instantiations of a class ([textDocument/references](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_references))
 - Providing type-based dereference completions ([textDocument/completion](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_completion))
@@ -25,18 +25,18 @@ Some of the analysis results that `multilspy` can provide are:
 ## Installation
 It is ideal to create a new virtual environment with `python>=3.10`. To create a virtual environment using conda and activate it:
 ```
-conda create -n multilspy_env python=3.10
-conda activate multilspy_env
+conda create -n scubalspy_env python=3.10
+conda activate scubalspy_env
 ```
 Further details and instructions on creation of Python virtual environments can be found in the [official documentation](https://docs.python.org/3/library/venv.html). Further, we also refer users to [Miniconda](https://docs.conda.io/en/latest/miniconda.html), as an alternative to the above steps for creation of the virtual environment.
 
-To install `multilspy` using pip, execute the following command:
+To install `scubalspy` using pip, execute the following command:
 ```
-pip install multilspy
+pip install scubalspy
 ```
 
 ## Supported Languages
-`multilspy` currently supports the following languages:
+`scubalspy` currently supports the following languages:
 | Code Language | Language Server |
 | --- | --- | 
 | java | Eclipse JDTLS |
@@ -54,12 +54,12 @@ pip install multilspy
 ## Usage
 Example usage:
 ```python
-from multilspy import SyncLanguageServer
-from multilspy.multilspy_config import MultilspyConfig
-from multilspy.multilspy_logger import MultilspyLogger
+from scubalspy import SyncLanguageServer
+from scubalspy.scubalspy_config import ScubalspyConfig
+from scubalspy.scubalspy_logger import ScubalspyLogger
 ...
-config = MultilspyConfig.from_dict({"code_language": "java"}) # Also supports "python", "rust", "csharp", "typescript", "javascript", "go", "dart", "ruby"
-logger = MultilspyLogger()
+config = ScubalspyConfig.from_dict({"code_language": "java"}) # Also supports "python", "rust", "csharp", "typescript", "javascript", "go", "dart", "ruby"
+logger = ScubalspyLogger()
 lsp = SyncLanguageServer.create(config, logger, "/abs/path/to/project/root/")
 with lsp.start_server():
     result = lsp.request_definition(
@@ -82,9 +82,9 @@ with lsp.start_server():
     ...
 ```
 
-`multilspy` also provides an asyncio based API which can be used in async contexts. Example usage (asyncio):
+`scubalspy` also provides an asyncio based API which can be used in async contexts. Example usage (asyncio):
 ```python
-from multilspy import LanguageServer
+from scubalspy import LanguageServer
 ...
 lsp = LanguageServer.create(...)
 async with lsp.start_server():
@@ -94,19 +94,19 @@ async with lsp.start_server():
     ...
 ```
 
-The file [src/multilspy/language_server.py](src/multilspy/language_server.py) provides the `multilspy` API. Several tests for `multilspy` present under [tests/multilspy/](tests/multilspy/) provide detailed usage examples for `multilspy`. The tests can be executed by running:
+The file [src/scubalspy/language_server.py](src/scubalspy/language_server.py) provides the `scubalspy` API. Several tests for `scubalspy` present under [tests/scubalspy/](tests/scubalspy/) provide detailed usage examples for `scubalspy`. The tests can be executed by running:
 ```bash
-pytest tests/multilspy
+pytest tests/scubalspy
 ```
 
-## Use of `multilspy` in AI4Code Scenarios like Monitor-Guided Decoding
-`multilspy` provides all the features that language-server-protocol provides to IDEs like VSCode. It is useful to develop toolsets that can interface with AI systems like Large Language Models (LLM). 
+## Use of `scubalspy` in AI4Code Scenarios like Monitor-Guided Decoding
+`scubalspy` provides all the features that language-server-protocol provides to IDEs like VSCode. It is useful to develop toolsets that can interface with AI systems like Large Language Models (LLM). 
 ### [Monitor-Guided Decoding](https://github.com/microsoft/monitors4codegen)
-One such usecase is Monitor-Guided Decoding, where `multilspy` is used to find results of static analyses like type-directed completions, to guide the token-by-token generation of code using an LLM, ensuring that all generated identifier/method names are valid in the context of the repository, significantly boosting the compilability of generated code. MGD also demonstrates use of `multilspy` to create monitors that ensure all function calls in LLM generated code receive correct number of arguments, and that functions of an object are called in the right order following a protocol (like not calling "read" before "open" on a file object).
+One such usecase is Monitor-Guided Decoding, where `scubalspy` is used to find results of static analyses like type-directed completions, to guide the token-by-token generation of code using an LLM, ensuring that all generated identifier/method names are valid in the context of the repository, significantly boosting the compilability of generated code. MGD also demonstrates use of `scubalspy` to create monitors that ensure all function calls in LLM generated code receive correct number of arguments, and that functions of an object are called in the right order following a protocol (like not calling "read" before "open" on a file object).
 
-### Multilspy in other usecases
+### Scubalspy in other usecases
 * ["Fix the Tests: Augmenting LLMs to Repair Test Cases with Static Collector and Neural Reranker," in 2024 IEEE 35th International Symposium on Software Reliability Engineering (ISSRE)](https://github.com/SQUARE-RG/SynTeR)
-* [Tutorial on obtaining python completions with multilspy](https://medium.com/@techhara/python-obtain-completions-3db4d2479b82)
+* [Tutorial on obtaining python completions with scubalspy](https://medium.com/@techhara/python-obtain-completions-3db4d2479b82)
 * Gathering and utilizing repository-wide context for repository-level coding agents
 
 ## Frequently Asked Questions (FAQ)
@@ -120,8 +120,8 @@ RuntimeError: Task <Task pending name='Task-2' coro=<_AsyncGeneratorContextManag
 
 Please ensure that you create a new environment with Python ```>=3.10```. For further details, please have a look at the [StackOverflow Discussion](https://stackoverflow.com/questions/73599594/asyncio-works-in-python-3-10-but-not-in-python-3-8).
 
-## Citing Multilspy
-If you're using Multilspy in your research or applications, please cite using this BibTeX:
+## Citing Scubalspy
+If you're using Scubalspy in your research or applications, please cite using this BibTeX:
 ```
 @inproceedings{NEURIPS2023_662b1774,
  author = {Agrawal, Lakshya A and Kanade, Aditya and Goyal, Navin and Lahiri, Shuvendu and Rajamani, Sriram},

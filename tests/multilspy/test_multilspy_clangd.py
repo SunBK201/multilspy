@@ -2,13 +2,14 @@
 This file contains tests for running the C/CPP Language Server: clangd
 """
 
-import pytest
 import os
-
-from multilspy import LanguageServer
-from multilspy.multilspy_config import Language
-from tests.test_utils import create_test_context
 from pathlib import PurePath
+
+import pytest
+from scubalspy import LanguageServer
+from scubalspy.scubalspy_config import Language
+
+from tests.test_utils import create_test_context
 
 pytest_plugins = ("pytest_asyncio",)
 
@@ -33,9 +34,9 @@ def create_compile_commands_file(source_directory_path):
     os.chdir(cwd)
 
 @pytest.mark.asyncio
-async def test_multilspy_clang():
+async def test_scubalspy_clang():
     """
-    Test the working of multilspy with cpp repository - https://github.com/tomorrowCoder/yaml-cpp
+    Test the working of scubalspy with cpp repository - https://github.com/tomorrowCoder/yaml-cpp
     """
     code_language = Language.CPP
     params = {

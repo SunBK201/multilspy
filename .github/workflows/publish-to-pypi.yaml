@@ -3,7 +3,7 @@ name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 on:
   push:
     branches:
-      - 'main'
+      - 'scubatrace'
     tags:
       - 'v*'  # Match tags starting with "v"
 
@@ -35,7 +35,7 @@ jobs:
     - name: Test with pytest
       run: |
         pip install pytest
-        pytest tests/multilspy
+        pytest tests/scubalspy
 
   build:
     name: Build the distribution
@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/multilspy  # Replace <package-name> with your PyPI project name
+      url: https://pypi.org/p/scubalspy  # Replace <package-name> with your PyPI project name
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
 
@@ -139,7 +139,7 @@ jobs:
 
     environment:
       name: testpypi
-      url: https://test.pypi.org/p/multilspy
+      url: https://test.pypi.org/p/scubalspy
 
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
