@@ -36,8 +36,8 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/SunBK201/scubalspy-scubatrace"
-"Bug Tracker" = "https://github.com/SunBK201/scubalspy-scubatrace/issues"
+"Homepage" = "https://github.com/SunBK201/multilspy"
+"Bug Tracker" = "https://github.com/SunBK201/multilspy/issues"
 
 [tool.setuptools]
 include-package-data = true
