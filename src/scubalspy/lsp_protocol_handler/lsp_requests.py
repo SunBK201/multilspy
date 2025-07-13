@@ -466,6 +466,13 @@ class LspRequest:
         a workspace edit which the client will apply to the workspace."""
         return await self.send_request("workspace/executeCommand", params)
 
+    async def switch_source_header(
+        self, params: lsp_types.TextDocumentIdentifier
+    ) -> Union["lsp_types.URI", None]:
+        """A request to switch the source file of a given text document. The request's parameter is of type
+        {@link TextDocumentIdentifier} the response is of type {@link URI} or a Thenable that resolves to such."""
+        return await self.send_request("textDocument/switchSourceHeader", params)
+
 
 class LspNotification:
     def __init__(self, send_notification):

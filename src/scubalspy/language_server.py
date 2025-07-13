@@ -846,6 +846,23 @@ class LanguageServer:
             outgoing_calls.append(outgoing_call)
         return outgoing_calls
 
+    async def request_switch_source_header(
+        self, relative_file_path: str, uri: LSPTypes.URI
+    ) -> LSPTypes.URI:
+        """
+        Raise a [textDocument/switchSourceHeader](https://clangd.llvm.org/extensions#switch-between-sourceheader) request to the Language Server
+        to switch the source file to its corresponding header file or vice versa. Wait for the response and return the result.
+
+        :param uri: The URI of the text document to switch
+
+        :return LSPTypes.URI: The URI of the switched file
+        """
+        with self.open_file(relative_file_path):
+            response = await self.server.send.switch_source_header({"uri": uri})
+        if response is None:
+            return ""
+        return response
+
 
 @ensure_all_methods_implemented(LanguageServer)
 class SyncLanguageServer:
@@ -1082,9 +1099,11 @@ class SyncLanguageServer:
         """
         Raise a [textDocument/prepareCallHierarchy](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_prepareCallHierarchy) request to the Language Server
         to prepare the call hierarchy at the given line and column in the given file. Wait for the response and return the result.
+
         :param relative_file_path: The relative path of the file that contains the target symbol
         :param line: The line number of the symbol
         :param column: The column number of the symbol
+
         :return List[scubalspy_types.CallHierarchyItem]: A list of call hierarchy items
         """
         result = asyncio.run_coroutine_threadsafe(
@@ -1101,8 +1120,10 @@ class SyncLanguageServer:
         """
         Raise a [callHierarchy/incomingCalls](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#callHierarchy_incomingCalls) request to the Language Server
         to find the incoming calls(one depth) to the given call hierarchy item. Wait for the response and return the result.
+
         :param req_call_item: The call hierarchy item for which incoming calls should be looked up
-        :return List[scubalspy_types.CallHierarchyItem]: A list of call hierarchy items
+
+        :return List[scubalspy_types.CallHierarchyIncomingCall]: A list of call hierarchy items
         """
         result = asyncio.run_coroutine_threadsafe(
             self.language_server.request_incoming_calls(req_call_item), self.loop
@@ -1115,10 +1136,28 @@ class SyncLanguageServer:
         """
         Raise a [callHierarchy/outgoingCalls](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#callHierarchy_outgoingCalls) request to the Language Server
         to find the outgoing calls(one depth) from the given call hierarchy item. Wait for the response and return the result.
+
         :param req_call_item: The call hierarchy item for which outgoing calls should be looked up
+
         :return List[scubalspy_types.CallHierarchyOutgoingCall]: A list of outgoing calls
         """
         result = asyncio.run_coroutine_threadsafe(
             self.language_server.request_outgoing_calls(req_call_item), self.loop
         ).result()
         return result
+
+    def request_switch_source_header(
+        self, relative_file_path: str, uri: LSPTypes.URI
+    ) -> LSPTypes.URI:
+        """
+        Raise a [textDocument/switchSourceHeader](https://clangd.llvm.org/extensions#switch-between-sourceheader) request to the Language Server
+        to switch between source and header files. Wait for the response and return the result.
+
+        :param uri: The URI of the file to switch
+
+        :return LSPTypes.URI: The URI of the switched file
+        """
+        return asyncio.run_coroutine_threadsafe(
+            self.language_server.request_switch_source_header(relative_file_path, uri),
+            self.loop,
+        ).result()
