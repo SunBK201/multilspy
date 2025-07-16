@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "scubalspy"
-version = "0.0.18"
+version = "0.0.19"
 authors = [
   { name="Lakshya A Agrawal", email="lakshya.aagrawal@gmail.com" },
   { name="SunBK201", email="sunbk201gm@gmail.com" },
