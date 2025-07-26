@@ -1,8 +1,8 @@
 """
-This file provides the implementation of the JSON-RPC client, that launches and 
+This file provides the implementation of the JSON-RPC client, that launches and
 communicates with the language server.
 
-The initial implementation of this file was obtained from 
+The initial implementation of this file was obtained from
 https://github.com/predragnikolic/OLSP under the MIT License with the following terms:
 
 MIT License
@@ -32,8 +32,10 @@ import asyncio
 import dataclasses
 import json
 import os
-import psutil
+import time
 from typing import Any, Dict, List, Optional, Union
+
+import psutil
 
 from .lsp_requests import LspNotification, LspRequest
 from .lsp_types import ErrorCodes
@@ -97,10 +99,14 @@ class StopLoopException(Exception):
 
 
 def create_message(payload: PayloadLike):
-    body = json.dumps(payload, check_circular=False, ensure_ascii=False, separators=(",", ":")).encode(ENCODING)
+    body = json.dumps(
+        payload, check_circular=False, ensure_ascii=False, separators=(",", ":")
+    ).encode(ENCODING)
     return (
         f"Content-Length: {len(body)}\r\n".encode(ENCODING),
-        "Content-Type: application/vscode-jsonrpc; charset=utf-8\r\n\r\n".encode(ENCODING),
+        "Content-Type: application/vscode-jsonrpc; charset=utf-8\r\n\r\n".encode(
+            ENCODING
+        ),
         body,
     )
 
@@ -236,13 +242,13 @@ class LanguageServerHandler:
         """
         # First cancel all tasks
         await self._cancel_pending_tasks()
-    
+
         process = self.process
         self.process = None
-    
+
         if not process:
             return
-    
+
         # Clean up the process
         await self._cleanup_process(process)
 
@@ -256,10 +262,12 @@ class LanguageServerHandler:
 
         if pending_tasks:
             try:
-                await asyncio.wait_for(asyncio.gather(*pending_tasks, return_exceptions=True), timeout=5.0)
+                await asyncio.wait_for(
+                    asyncio.gather(*pending_tasks, return_exceptions=True), timeout=5.0
+                )
             except (asyncio.TimeoutError, Exception):
                 pass
-    
+
         self.tasks = {}
 
     async def _cleanup_process(self, process):
@@ -267,18 +275,18 @@ class LanguageServerHandler:
         # Close stdin first to prevent deadlocks
         # See: https://bugs.python.org/issue35539
         self._safely_close_pipe(process.stdin)
-    
+
         # Terminate/kill the process if it's still running
         if process.returncode is None:
             await self._terminate_or_kill_process(process)
-    
+
         # Close stdout and stderr pipes after process has exited
         # This is essential to prevent "I/O operation on closed pipe" errors and
         # "Event loop is closed" errors during garbage collection
         # See: https://bugs.python.org/issue41320 and https://github.com/python/cpython/issues/88050
         self._safely_close_pipe(process.stdout)
         self._safely_close_pipe(process.stderr)
-    
+
         # Small delay to ensure OS has released file handles
         await asyncio.sleep(0.5)
 
@@ -294,7 +302,7 @@ class LanguageServerHandler:
         """Try to terminate the process gracefully, then forcefully if necessary."""
         # First try to terminate the process tree gracefully
         self._signal_process_tree(process, terminate=True)
-    
+
         # Wait for the process to exit (with timeout)
         try:
             await asyncio.wait_for(process.wait(), timeout=10)
@@ -310,14 +318,14 @@ class LanguageServerHandler:
     def _signal_process_tree(self, process, terminate=True):
         """Send signal (terminate or kill) to the process and all its children."""
         signal_method = "terminate" if terminate else "kill"
-    
+
         # Try to get the parent process
         parent = None
         try:
             parent = psutil.Process(process.pid)
         except (psutil.NoSuchProcess, psutil.AccessDenied, Exception):
             pass
-    
+
         # If we have the parent process and it's running, signal the entire tree
         if parent and parent.is_running():
             # Signal children first
@@ -326,7 +334,7 @@ class LanguageServerHandler:
                     getattr(child, signal_method)()
                 except (psutil.NoSuchProcess, psutil.AccessDenied, Exception):
                     pass
-        
+
             # Then signal the parent
             try:
                 getattr(parent, signal_method)()
@@ -338,7 +346,6 @@ class LanguageServerHandler:
                 getattr(process, signal_method)()
             except Exception:
                 pass
-
 
     async def shutdown(self) -> None:
         """
@@ -366,7 +373,11 @@ class LanguageServerHandler:
         invoking the registered response and notification handlers
         """
         try:
-            while self.process and self.process.stdout and not self.process.stdout.at_eof():
+            while (
+                self.process
+                and self.process.stdout
+                and not self.process.stdout.at_eof()
+            ):
                 line = await self.process.stdout.readline()
                 if not line:
                     continue
@@ -382,7 +393,9 @@ class LanguageServerHandler:
                     continue
                 body = await self.process.stdout.readexactly(num_bytes)
 
-                self.tasks[self.task_counter] = asyncio.get_event_loop().create_task(self._handle_body(body))
+                self.tasks[self.task_counter] = asyncio.get_event_loop().create_task(
+                    self._handle_body(body)
+                )
                 self.task_counter += 1
         except (BrokenPipeError, ConnectionResetError, StopLoopException):
             pass
@@ -393,11 +406,15 @@ class LanguageServerHandler:
         Continuously read from the language server process stderr and log the messages
         """
         try:
-            while self.process and self.process.stderr and not self.process.stderr.at_eof():
+            while (
+                self.process
+                and self.process.stderr
+                and not self.process.stderr.at_eof()
+            ):
                 line = await self.process.stderr.readline()
                 if not line:
                     continue
-                self._log("LSP stderr: " + line.decode(ENCODING, errors='replace'))
+                self._log("LSP stderr: " + line.decode(ENCODING, errors="replace"))
         except (BrokenPipeError, ConnectionResetError, StopLoopException):
             pass
 
@@ -481,7 +498,14 @@ class LanguageServerHandler:
         msg = create_message(payload)
         if self.logger:
             self.logger("client", "server", payload)
-        self.process.stdin.writelines(msg)
+        for attempt in range(10):
+            try:
+                self.process.stdin.writelines(msg)
+                break
+            except BufferError:
+                time.sleep(0.0001 * (2**attempt)) # Exponential backoff
+        else:
+            return
 
     async def _send_payload(self, payload: StringDict) -> None:
         """
@@ -541,7 +565,9 @@ class LanguageServerHandler:
         except Error as ex:
             self.send_error_response(request_id, ex)
         except Exception as ex:
-            self.send_error_response(request_id, Error(ErrorCodes.InternalError, str(ex)))
+            self.send_error_response(
+                request_id, Error(ErrorCodes.InternalError, str(ex))
+            )
 
     async def _notification_handler(self, response: StringDict) -> None:
         """
