@@ -40,7 +40,7 @@ pip install scubalspy
 | Code Language | Language Server |
 | --- | --- | 
 | java | Eclipse JDTLS |
-| python | jedi-language-server |
+| python | Pyright |
 | rust | Rust Analyzer |
 | csharp | OmniSharp / RazorSharp |
 | typescript | TypeScriptLanguageServer |

@@ -76,11 +76,11 @@ class LanguageServer:
         :return LanguageServer: A language specific LanguageServer instance.
         """
         if config.code_language == Language.PYTHON:
-            from scubalspy.language_servers.jedi_language_server.jedi_server import (
-                JediServer,
+            from scubalspy.language_servers.pyright.pyright import (
+                PyrightServer,
             )
 
-            return JediServer(config, logger, repository_root_path)
+            return PyrightServer(config, logger, repository_root_path)
         elif config.code_language == Language.JAVA:
             from scubalspy.language_servers.eclipse_jdtls.eclipse_jdtls import (
                 EclipseJDTLS,
@@ -477,6 +477,9 @@ class LanguageServer:
                 new_item["absolutePath"], self.repository_root_path
             )
             ret.append(scubalspy_types.Location(**new_item))
+        elif response is None:
+            # No definition found
+            return []
         else:
             assert False, f"Unexpected response from Language Server: {response}"
 
@@ -517,6 +520,8 @@ class LanguageServer:
                 }
             )
 
+        if response is None:
+            return []
         ret: List[scubalspy_types.Location] = []
         assert isinstance(
             response, list
@@ -674,6 +679,8 @@ class LanguageServer:
                 }
             )
 
+        if response is None:
+            return [], None
         ret: List[scubalspy_types.UnifiedSymbolInformation] = []
         l_tree = None
         assert isinstance(
@@ -755,6 +762,8 @@ class LanguageServer:
         if response is None:
             return None
 
+        if response is None:
+            return []
         assert isinstance(response, list)
 
         ret: List[scubalspy_types.UnifiedSymbolInformation] = []
@@ -814,6 +823,8 @@ class LanguageServer:
         incoming_call_response = await self.server.send.incoming_calls(
             {"item": req_call_item}
         )
+        if incoming_call_response is None:
+            return []
 
         incoming_calls: List[scubalspy_types.CallHierarchyIncomingCall] = []
         for item in incoming_call_response:
@@ -836,6 +847,8 @@ class LanguageServer:
         outgoing_call_response = await self.server.send.outgoing_calls(
             {"item": req_call_item}
         )
+        if outgoing_call_response is None:
+            return []
 
         outgoing_calls: List[scubalspy_types.CallHierarchyOutgoingCall] = []
         for item in outgoing_call_response:

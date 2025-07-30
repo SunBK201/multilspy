@@ -16,7 +16,7 @@ from scubalspy.scubalspy_config import ScubalspyConfig
 from scubalspy.scubalspy_logger import ScubalspyLogger
 
 
-class JediServer(LanguageServer):
+class PyrightServer(LanguageServer):
     """
     Provides Python specific instantiation of the LanguageServer class. Contains various configurations and settings specific to Python.
     """
@@ -29,7 +29,7 @@ class JediServer(LanguageServer):
             config,
             logger,
             repository_root_path,
-            ProcessLaunchInfo(cmd="jedi-language-server", cwd=repository_root_path),
+            ProcessLaunchInfo(cmd="pyright-langserver --stdio", cwd=repository_root_path),
             "python",
         )
 
@@ -58,7 +58,7 @@ class JediServer(LanguageServer):
         return d
 
     @asynccontextmanager
-    async def start_server(self) -> AsyncIterator["JediServer"]:
+    async def start_server(self) -> AsyncIterator["PyrightServer"]:
         """
         Starts the JEDI Language Server, waits for the server to be ready and yields the LanguageServer instance.
 
@@ -105,14 +105,9 @@ class JediServer(LanguageServer):
                 logging.INFO,
             )
             init_response = await self.server.send.initialize(initialize_params)
-            assert init_response["capabilities"]["textDocumentSync"]["change"] == 2
             assert "completionProvider" in init_response["capabilities"]
-            assert init_response["capabilities"]["completionProvider"] == {
-                "triggerCharacters": [".", "'", '"'],
-                "resolveProvider": True,
-            }
-
             self.server.notify.initialized({})
+            self.server.notify.workspace_did_change_configuration({}) # pyright-langserver bug
 
             yield self
 

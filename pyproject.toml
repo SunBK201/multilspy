@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "scubalspy"
-version = "0.0.21"
+version = "0.0.22"
 authors = [
   { name="Lakshya A Agrawal", email="lakshya.aagrawal@gmail.com" },
   { name="SunBK201", email="sunbk201gm@gmail.com" },
@@ -29,7 +29,7 @@ classifiers = [
 ]
 
 dependencies = [
-  "jedi-language-server==0.41.3",
+  "pyright>=1.1.403",
   "requests==2.32.3",
   "typing-extensions>=4.2.0",
   "psutil (>=7.0.0,<8.0.0)"
