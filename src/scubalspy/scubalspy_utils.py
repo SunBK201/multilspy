@@ -14,6 +14,7 @@ from pathlib import Path, PurePath
 from typing import Tuple, Union
 
 import requests
+
 from scubalspy.scubalspy_exceptions import ScubalspyException
 from scubalspy.scubalspy_logger import ScubalspyLogger
 
@@ -147,7 +148,7 @@ class FileUtils:
         """
         try:
             tmp_files = []
-            tmp_file_name = str(PurePath(os.path.expanduser("~"), "scubalspy_tmp", uuid.uuid4().hex))
+            tmp_file_name = str(PurePath(os.path.expanduser("~"), ".scubalspy_tmp", uuid.uuid4().hex))
             tmp_files.append(tmp_file_name)
             os.makedirs(os.path.dirname(tmp_file_name), exist_ok=True)
             FileUtils.download_file(logger, url, tmp_file_name)
